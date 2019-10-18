@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-
   root 'credentials#index'
+
+  get '/credential', to: 'credentials#credential'
+
+  get '/presentation', to: 'credentials#presentation'
 end
