@@ -1,0 +1,4 @@
+---
+applications:
+- name: verifiable-credentials-spike
+  buildpack: https://github.com/cloudfoundry/ruby-buildpack.git
