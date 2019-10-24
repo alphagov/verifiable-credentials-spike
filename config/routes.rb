@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'credentials#index'
 
-  get '/credential', to: 'credentials#credential'
+  get '/issue/:type', to: 'credentials#issue'
 
-  get '/presentation', to: 'credentials#presentation'
+  get '/issue/jwt/:type', to: 'credentials#issue_jwt'
 end

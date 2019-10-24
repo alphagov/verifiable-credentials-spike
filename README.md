@@ -1,24 +1,17 @@
-# README
+# Verifiable Credentials Spike
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+`bundle install`
 
-* Ruby version
+`bundle exec rails s`
 
-* System dependencies
+## Issuing Credentials
 
-* Configuration
+Currently has 2 different endpoints:
 
-* Database creation
+`/issue/:type`
 
-* Database initialization
+`/issue/jwt/:type`
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Type can be either `credential` or `presentation`
