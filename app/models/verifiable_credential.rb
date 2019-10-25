@@ -1,31 +1,34 @@
 require 'time'
 
 class VerifiableCredential
+  include Proof
 
   def build
     {
-      "verifiableCredential": {
-        "@context": [
-          "https://www.w3.org/2018/credentials/v1"
-        ],
-        "id": "https://example.org/credentials/1234",
-        "type": "ExampleAddressCredential",
-        "issuer": "https://example.org/people#me",
-        "issuanceDate": Time.now.utc.iso8601,
-        "credentialSubject": {
-          "id": "did:gov:#{SecureRandom.uuid}",
-          "type": "Person",
-          "address": {
-            "type": "PostalAddress",
-            "streetAddress": "123 Main St.",
-            "addressLocality": "Blacksburg",
-            "addressRegion": "VA",
-            "postalCode": "24060",
-            "addressCountry": "US"
-          }
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1"
+      ],
+      "type": ["VerifiableCredential", "ExampleAddressCredential"],
+      "id": "https://example.org/credentials/1234",
+      "issuer": "https://example.org/people#me",
+      "issuanceDate": Time.now.utc.iso8601,
+      "credentialSubject": {
+        "id": "did:gov:#{SecureRandom.uuid}",
+        "type": "Person",
+        "address": {
+          "type": "PostalAddress",
+          "streetAddress": "123 Main St.",
+          "addressLocality": "Blacksburg",
+          "addressRegion": "VA",
+          "postalCode": "24060",
+          "addressCountry": "US"
         }
       }
     }
+  end
+
+  def attach_proof(payload)
+    payload.merge("proof": create_proof(payload))
   end
 
 private

@@ -1,17 +1,23 @@
 class VerifiablePresentation
+  include Proof
+
   def initialize(credential)
     @credential = credential
   end
 
   def build
     {
-      "verifiablePresentation": {
-        "@context": [
-          "https://www.w3.org/2018/credentials/v1"
-        ],
-        "type": "VerifiablePresentation"
-      }.merge(credential)
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1"
+      ],
+      "type": "VerifiablePresentation",
+      "id": "https://example.org/credentials/1234",
+      "verifiableCredential": [credential]
     }
+  end
+
+  def attach_proof(payload)
+    payload.merge("proof": [create_proof(payload)])
   end
 
 private
