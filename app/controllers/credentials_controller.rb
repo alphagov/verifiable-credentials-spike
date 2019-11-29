@@ -22,8 +22,12 @@ class CredentialsController < ApplicationController
 
   def verify
     verified = verify_signature?(params[:vc].to_unsafe_h)
-    response_message = verified ? "verification success" : "verification failure"
-    render plain: response_message
+    response_status = verified ? :ok : :bad_request
+  rescue ArgumentError => e
+    puts e.message
+    response_status = :bad_request
+  ensure
+    render status: response_status
   end
 
 private
