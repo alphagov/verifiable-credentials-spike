@@ -1,5 +1,6 @@
 class CredentialsController < ApplicationController
   include JwtAud
+  include Proof
 
   def index
     render json: { hello: 'world' }
@@ -17,6 +18,12 @@ class CredentialsController < ApplicationController
     render json: { jws: encode(jwt_credential), dummy_key: rsa_public.to_s }
   rescue NoMethodError
     render json: { error: "Unknown type: #{type}" }, status: :bad_request
+  end
+
+  def verify
+    verified = verify_signature?(params[:vc].to_unsafe_h)
+    response_message = verified ? "verification success" : "verification failure"
+    render plain: response_message
   end
 
 private

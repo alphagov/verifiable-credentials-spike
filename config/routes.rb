@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   get '/issue/:type', to: 'credentials#issue'
 
   get '/issue/jwt/:type', to: 'credentials#issue_jwt'
+
+  post '/verify', to: 'credentials#verify'
 end
