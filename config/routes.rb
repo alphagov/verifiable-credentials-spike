@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'credentials#index'
+  root 'application#index'
+
+  get '/issue/', to: 'credentials#index'
 
   get '/issue/:type', to: 'credentials#issue'
 

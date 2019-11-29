@@ -28,7 +28,9 @@ class VerifiableCredential
   end
 
   def attach_proof(payload)
-    payload.merge("proof": create_proof(payload))
+    proof_options = create_proof
+    proof_options.merge!("challenge": create_signature(payload, proof_options))
+    payload.merge("proof": proof_options)
   end
 
 private
