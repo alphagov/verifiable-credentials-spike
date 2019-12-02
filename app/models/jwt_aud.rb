@@ -1,7 +1,11 @@
 require 'time'
 require 'jwt'
+require 'net/http'
+require 'uri'
 
 module JwtAud
+  DIRECTORY_DOMAIN = 'https://directory-prototype.cloudapps.digital'.freeze
+
   def build_jwt(payload)
     {
       "iss": "did:gov:#{SecureRandom.uuid}",  # issuer
@@ -24,10 +28,21 @@ module JwtAud
   end
 
   def rsa_private
-    @_rsa_private ||= OpenSSL::PKey::RSA.generate(2048)
+    @_rsa_private ||= OpenSSL::PKey::RSA.new(idp_private_key)
   end
 
   def rsa_public
     @_rsa_public ||= rsa_private.public_key
+  end
+
+  def idp_private_key
+    @_idp_private_key || begin
+      keys_endpoint = URI(File.join(DIRECTORY_DOMAIN, 'keys', params['idp-name']))
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      request = Net::HTTP::Get.new(uri.request_uri)
+      res = http.request(request)
+      res.code == '200' ? JSON.parse(res.body)['signing'] : nil
+    end
   end
 end

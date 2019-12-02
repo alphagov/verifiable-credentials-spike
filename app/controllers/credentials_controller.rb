@@ -18,6 +18,8 @@ class CredentialsController < ApplicationController
     render json: { jws: encode(jwt_credential), dummy_key: rsa_public.to_s }
   rescue NoMethodError
     render json: { error: "Unknown type: #{type}" }, status: :bad_request
+  rescue TypeError
+    render json: { error: "#{params['idp-name']} not in directory" }, status: :not_found
   end
 
   def verify
