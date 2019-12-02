@@ -2,3 +2,6 @@
 applications:
 - name: verifiable-credentials-spike
   buildpack: https://github.com/cloudfoundry/ruby-buildpack.git
+  env:
+    RAILS_ENV: production
+    DIRECTORY_DOMAIN: https://directory-prototype.cloudapps.digital
