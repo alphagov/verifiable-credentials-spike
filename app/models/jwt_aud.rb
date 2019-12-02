@@ -37,9 +37,9 @@ module JwtAud
 
   def idp_private_key
     @_idp_private_key || begin
-      keys_endpoint = URI(File.join(DIRECTORY_DOMAIN, 'keys', params['idp-name']))
+      uri = URI(File.join(DIRECTORY_DOMAIN, 'keys', params['idp-name']))
       http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
+      http.use_ssl = true if Rails.env.production?
       request = Net::HTTP::Get.new(uri.request_uri)
       res = http.request(request)
       res.code == '200' ? JSON.parse(res.body)['signing'] : nil
