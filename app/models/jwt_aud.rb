@@ -4,7 +4,7 @@ require 'net/http'
 require 'uri'
 
 module JwtAud
-  DIRECTORY_DOMAIN = 'https://directory-prototype.cloudapps.digital'.freeze
+  DIRECTORY_DOMAIN = 'http://localhost:3000'.freeze
 
   def build_jwt(payload)
     {
@@ -16,7 +16,7 @@ module JwtAud
       "exp": Time.now.utc.to_i + 4 * 3600,  # expiration
       "sub": SecureRandom.alphanumeric,  # subject
       "nonce": SecureRandom.uuid  # Is this needed?
-    }.merge({ "v#{type[0].downcase}": payload.without(:id) }) # remove ID is JTI takes its' place
+    }.merge({ "v#{type[0].downcase}": payload })
   end
 
   def encode(unencoded_payload)
