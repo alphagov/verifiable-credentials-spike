@@ -14,7 +14,7 @@ class CredentialsController < ApplicationController
 
   def issue_jwt
     jwt_credential = build_jwt(credential_payload)
-    render json: { jws: encode(jwt_credential), dummy_key: rsa_public.to_s }
+    render json: { jws: encode(jwt_credential), public_key: rsa_public.to_s }
   rescue NoMethodError
     render json: { error: "Unknown type: #{type}" }, status: :bad_request
   rescue TypeError
