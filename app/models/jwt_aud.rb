@@ -4,7 +4,9 @@ require 'net/http'
 require 'uri'
 
 module JwtAud
-  DIRECTORY_DOMAIN = 'http://localhost:3000'.freeze
+
+  DIRECTORY_DOMAIN = ENV.fetch('DIRECTORY_DOMAIN', 'http://localhost:3000').freeze
+
 
   def build_jwt(payload)
     {

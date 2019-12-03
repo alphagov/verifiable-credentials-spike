@@ -7,15 +7,13 @@ class CredentialsController < ApplicationController
   end
 
   def issue
-    payload = send(type).build
-    render json: send(type).attach_proof(payload)
+    render json: credential_payload
   rescue NoMethodError
     render json: { error: "Unknown type: #{type}" }, status: :bad_request
   end
 
   def issue_jwt
-    payload = send(type).build
-    jwt_credential = build_jwt(send(type).attach_proof(payload))
+    jwt_credential = build_jwt(credential_payload)
     render json: { jws: encode(jwt_credential), dummy_key: rsa_public.to_s }
   rescue NoMethodError
     render json: { error: "Unknown type: #{type}" }, status: :bad_request
@@ -34,6 +32,11 @@ class CredentialsController < ApplicationController
   end
 
 private
+
+  def credential_payload
+    payload = send(type).build
+    send(type).attach_proof(payload)
+  end
 
   def type
     @_type ||= params[:type]
